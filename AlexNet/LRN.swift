@@ -1,5 +1,10 @@
 import TensorFlow
 
+// Local Response Normalization.
+// https://www.tensorflow.org/api_docs/cc/class/tensorflow/ops/l-r-n
+// For details, see Krizhevsky et al., ImageNet classification with deep convolutional neural networks (NIPS 2012).
+// http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
+
 struct LRN: Layer {
     typealias Input = Tensor<Float>
     
@@ -22,6 +27,8 @@ struct LRN: Layer {
 func localResponseNorm<T : FloatingPoint & TensorFlowScalar>(_ input: Tensor<T>, depthRadius: Int64 = 5, bias: Double = 1, alpha: Double = 0.0001, beta: Double = 0.75) -> Tensor<T> {
     return Raw.lRN(input, depthRadius: depthRadius, bias: bias, alpha: alpha, beta: beta)
 }
+
+
 
 func vjpLocalResponseNorm<T : FloatingPoint & TensorFlowScalar>(_ input: Tensor<T>, depthRadius: Int64 = 5, bias: Double = 1, alpha: Double = 0.0001, beta: Double = 0.75) -> (Tensor<T>, (Tensor<T>) -> (Tensor<T>)) {
     let value = localResponseNorm(input, depthRadius: depthRadius, bias: bias, alpha: alpha, beta: beta)
